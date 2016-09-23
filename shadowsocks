@@ -1,0 +1,21 @@
+#!/bin/sh 
+
+# Author: https://github.com/softwaredownload/openwrt-fanqiang
+# Date: 2015-12
+
+START=95
+
+SERVICE_USE_PID=1
+SERVICE_WRITE_PID=1
+SERVICE_DAEMONIZE=1
+
+start() {
+    service_start /usr/bin/ss-redir -b 0.0.0.0 -c /etc/shadowsocks.json -f /var/run/shadowsocks.pid
+    /usr/bin/shadowsocks-firewall
+}
+
+stop() {
+    service_stop /usr/bin/ss-redir
+    killall ss-redir
+    /etc/init.d/firewall restart
+}
